@@ -1,0 +1,23 @@
+{
+  "name": "opencode-deepseek-websearch",
+  "version": "0.1.0",
+  "description": "OpenCode plugin that connects the built-in websearch tool to the DeepSeek Search API.",
+  "license": "MIT",
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "files": [
+    "src"
+  ],
+  "scripts": {
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@opencode/plugin": "2.3.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "typescript": "^5.7.0"
+  }
+}
