@@ -6,7 +6,7 @@ const DEFAULT_BASE_URL = "https://api.deepseek.com";
 const DEFAULT_COUNT = 10;
 
 export default Plugin.define({
-  id: "deepseek.search",
+  id: "opencode-deepseek-websearch",
   async setup(ctx) {
     const options: SearchOptions = {
       baseURL: (

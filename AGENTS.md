@@ -17,6 +17,7 @@ pnpm run typecheck
 
 ## Provider 约定
 
+- 插件 id 为 `opencode-deepseek-websearch`，与包名一致。
 - provider id 为 `deepseek`，名称 `DeepSeek`。
 - 只有在 `editor.default.get()` 返回 `undefined` 时才把它设为默认，不覆盖用户在 `opencode.json` 中配置的 provider。
 - `execute` 返回 `WebSearch.Result[]`，供内置 `websearch` 工具使用。
