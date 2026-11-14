@@ -1,15 +1,13 @@
 # AGENTS.md
 
-本文件记录 DeepSeek 网页搜索插件的开发命令、代码结构、接口约定和实现细节。`README.md` 面向使用者，只保留功能、配置和验证方式；修改文档时按此分工放置内容。
+`README.md` 面向使用者，记录功能、配置、权限、限制和验证方式。
 
 ## 构建与开发
 
 ```sh
-npm install
-npm run typecheck
+pnpm install
+pnpm run typecheck
 ```
-
-本机没有安装 Bun，因此用 npm 管理依赖并生成 `package-lock.json`。没有构建步骤：OpenCode 直接加载 TypeScript 源码，修改后自动重载。
 
 ## 代码结构
 
@@ -21,7 +19,7 @@ npm run typecheck
 
 - provider id 为 `deepseek`，名称 `DeepSeek`。
 - 只有在 `editor.default.get()` 返回 `undefined` 时才把它设为默认，不覆盖用户在 `opencode.json` 中配置的 provider。
-- `execute` 返回 `WebSearch.Result[]` 形状的数据，由 OpenCode 内置的 `websearch` 工具消费。
+- `execute` 返回 `WebSearch.Result[]`，供内置 `websearch` 工具使用。
 
 ## 凭证
 

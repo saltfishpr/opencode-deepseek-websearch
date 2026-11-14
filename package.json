@@ -3,7 +3,12 @@
   "version": "0.1.0",
   "description": "OpenCode plugin that connects the built-in websearch tool to the DeepSeek Search API.",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/saltfishpr/opencode-deepseek-websearch.git"
+  },
   "type": "module",
+  "packageManager": "pnpm@11.25.0",
   "exports": {
     ".": "./src/index.ts"
   },

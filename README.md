@@ -6,7 +6,7 @@
 
 ## 加载
 
-本目录是一个本地插件包，通过 workspace 根目录的 `opencode.json` 加载：
+在 workspace 根目录的 `opencode.json` 中加载：
 
 ```jsonc
 {
@@ -15,7 +15,7 @@
 }
 ```
 
-`package.json` 的 `exports` 指向 `src/index.ts`。修改代码后 OpenCode 会自动重载，不需要重启。
+修改代码后 OpenCode 会自动重载。
 
 ## 凭证
 
@@ -24,8 +24,6 @@
 1. 插件 options 里的 `apiKey`
 2. OpenCode 中已连接的 DeepSeek 凭据（集成 `deepseek`）
 3. 环境变量 `DEEPSEEK_API_KEY`
-
-只要其中任意一个可用即可，无需重复配置。
 
 ## 可选配置
 
