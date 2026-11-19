@@ -8,6 +8,29 @@ const DEFAULT_COUNT = 10;
 export default Plugin.define({
   id: "opencode-deepseek-websearch",
   async setup(ctx) {
+    const deepseek = { providerID: "deepseek" };
+    await ctx.session.hook("context", (event) => {
+      delete event.tools.websearch;
+    }, deepseek);
+
+    await ctx.session.hook("http.request", async (event) => {
+      const { request } = event;
+      if (event.kind !== "primary" || request.method !== "POST") return;
+      if (!new URL(request.url).pathname.endsWith("/chat/completions")) return;
+
+      const body = await request.clone().json();
+      // DeepSeek defaults to thinking enabled when the wire request omits this field.
+      if (body.thinking?.type === "disabled") return;
+
+      const tools: { type: string }[] = body.tools ?? [];
+      for (const type of ["deepseek_web_search", "deepseek_read_url"]) {
+        if (!tools.some((tool) => tool.type === type)) tools.push({ type });
+      }
+      const headers = new Headers(request.headers);
+      headers.delete("content-length");
+      event.request = new Request(request, { headers, body: JSON.stringify({ ...body, tools }) });
+    }, deepseek);
+
     const options: SearchOptions = {
       baseURL: (
         optionalString(ctx.options.baseURL) ??

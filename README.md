@@ -1,8 +1,10 @@
 # DeepSeek 网页搜索
 
-把 OpenCode 内置的 `websearch` 工具接到 [DeepSeek 网页搜索 API](https://api-docs.deepseek.com/zh-cn/api/search)。
+使用 `deepseek` 模型 provider 时，插件在主对话和编码工具执行后的 Chat Completions 请求中启用 [DeepSeek 服务端联网工具](https://api-docs.deepseek.com/zh-cn/guides/web_tools)。开启 thinking（含官方默认值）时追加 `deepseek_web_search` 和 `deepseek_read_url`；关闭 thinking 时不追加。编码工具和 thinking 设置保持原样，标题生成和上下文压缩不受影响。按 provider ID 匹配全部模型；官方联网工具指南指定的模型是 `deepseek-flash`。
 
-插件注册一个 id 为 `deepseek` 的搜索 provider，并在没有显式配置 provider 时把它设为默认。模型调用 `websearch` 时就会走 `POST https://api.deepseek.com/v1/tools/search`。
+插件从 DeepSeek 主请求的顶层工具中移除 `websearch`。OpenCode 2.3.2 的 **`full_codemode` 限制**：开启该实验功能时，`execute` 的目录在插件 hook 之前生成，仍可能发现并调用客户端搜索。需要同时阻止两个入口时，请保持 `full_codemode` 关闭。
+
+其他模型 provider 继续使用原有的客户端搜索选择。插件注册的客户端搜索 provider `deepseek` 调用 `POST /v1/tools/search`，只在没有显式配置搜索 provider 时成为默认值。
 
 ## 加载
 
@@ -19,7 +21,7 @@
 
 ## 凭证
 
-`execute` 按以下顺序取 API Key：
+服务端联网复用当前模型请求的凭证。以下凭证顺序和插件选项仅用于客户端搜索：
 
 1. 插件 options 里的 `apiKey`
 2. OpenCode 中已连接的 DeepSeek 凭据（集成 `deepseek`）
@@ -66,7 +68,8 @@
 
 ## 计费与限制
 
-- Search 按成功请求计费，5 元 / 1000 次；失败、无结果、超时不计费。
+- 服务端联网只按模型 Token 计费；联网工具本身不单独收费。是否联网由模型决定。
+- 以下限制适用于客户端 Search API：按成功请求计费，5 元 / 1000 次；失败、无结果、超时不计费。
 - 账号级限速 100 QPS。
 - `query` 长度为 1～128 个字符，`count` 为 1～50。
 - 插件对单次请求设置了 30 秒超时，并跟随会话取消。
